@@ -49,19 +49,8 @@ userQueryServer <- function(input,output,session,app_id){
 
   shiny::observeEvent(input$userQuery_query_btn,{
     user_name = var_userName()
-    print(user_name)
-    if(user_name ==''){
-      tsui::pop_notice("请输入用户名!")
-    }else{
-
-
-
-        data = userQuery_query(app_id = app_id,user_name = user_name)
-        tsui::run_dataTable2(id = 'userQuery_query_dataview',data = data)
-
-    }
-
-
+    data = userQuery_query(app_id = app_id,user_name = user_name)
+    tsui::run_dataTable2(id = 'userQuery_query_dataview',data = data)
 
   })
 

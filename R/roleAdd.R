@@ -89,6 +89,49 @@ roleAdd_MaxId <- function(conn = tsda::conn_rds('rdbe')) {
 }
 
 
+
+#' 检测角色是否存在
+#'
+#' @param conn 连接
+#' @param app_id 程序ID
+#' @param role_name 角色名
+#'
+#' @return 返回值
+#' @export
+#'
+#' @examples
+#'
+#' roleAdd_objectRight_save()
+roleAdd_objectRight_save <- function(conn = tsda::conn_rds('rdbe'),
+                         app_id ='cpdms',role_name='demo') {
+  sql_del <-paste0("delete from  t_md_objectRight
+
+  where FappId = '",app_id,"' and Fpermissions ='",role_name,"'")
+  tsda::sql_update(conn,sql_del)
+
+  sql_ins <- paste0("insert into t_md_objectRight
+SELECT  0 as [Fshow]
+      ,[Fname]
+      ,[Fid]
+      ,[Ficon]
+      ,'",role_name,"' as [Fpermissions]
+      ,[Ftype]
+      ,[FparentId]
+      ,[Findex]
+      ,[FappId]
+  FROM [rdbe].[dbo].[t_md_objectRight]
+  where FappId = '",app_id,"' and Fpermissions ='standard'")
+  tsda::sql_update(conn,sql_ins)
+
+
+
+
+}
+
+
+
+
+
 #' 检测角色是否存在
 #'
 #' @param conn 连接
@@ -111,6 +154,8 @@ roleAdd_save <- function(conn = tsda::conn_rds('rdbe'),
     sql <- paste0("  insert into t_md_role
     values(",FInterId,",'",app_id,"','",role_name,"','",note,"',0)")
     tsda::sql_update(conn,sql)
+    #同步写入默认对象
+    roleAdd_objectRight_save(conn = conn,app_id = app_id,role_name = role_name)
     res = TRUE
 
   }else{

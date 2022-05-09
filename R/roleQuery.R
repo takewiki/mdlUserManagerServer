@@ -31,7 +31,7 @@ roleQuery_disable <- function(conn = tsda::conn_rds('rdbe'),app_id ='cpdms',role
 #' roleQuery_query()
 roleQuery_enable <- function(conn = tsda::conn_rds('rdbe'),app_id ='cpdms',role_name='') {
   sql <-paste0("update a set a.Fdeleted =0 from t_md_role a
-  where  FappId ='",app_id,"' and  Fuser='",role_name,"'")
+  where  FappId ='",app_id,"' and  FRoleName='",role_name,"'")
   data = tsda::sql_update(conn,sql)
 
   return(data)
@@ -98,7 +98,7 @@ roleQuery_query <- function(conn = tsda::conn_rds('rdbe'),app_id ='cpdms',role_n
     }
 
   }
-
+  print(sql)
   data = tsda::sql_select(conn,sql)
 
   return(data)
@@ -120,15 +120,25 @@ roleQuery_query <- function(conn = tsda::conn_rds('rdbe'),app_id ='cpdms',role_n
 #' @examples
 #' roleQueryServer_query()
 roleQueryServer_query <- function(input,output,session,app_id){
+  print('bug1')
   var_roleName = tsui::var_text('roleQuery_roleName_txt')
+  print('bug2')
   var_roleQuery_status_lc1 <- tsui::var_ListChoose1('roleQuery_status_lc1')
+  print('bug3')
 
 
   shiny::observeEvent(input$roleQuery_query_btn,{
+    print('bug4')
     role_name = var_roleName()
+    print('bug5')
+    print(role_name)
     status = var_roleQuery_status_lc1()
+    print('bug6')
     print(status)
+    print('bug7')
     data = roleQuery_query(app_id = app_id,role_name = role_name,status = status)
+    print('bug8')
+    print(data)
     tsui::run_dataTable2(id = 'roleQuery_query_dataview',data = data)
 
   })
@@ -218,9 +228,13 @@ roleQueryServer_enable <- function(input,output,session,app_id){
 #' @examples
 #' roleQueryServer()
 roleQueryServer <- function(input,output,session,app_id){
+  print(1)
  roleQueryServer_query(input,output,session,app_id)
+ print(2)
   roleQueryServer_disable(input,output,session,app_id)
+  print(3)
   roleQueryServer_enable(input,output,session,app_id)
+  print(4)
 
 
 

@@ -1,7 +1,7 @@
 Package: mdlUserManagerServer
 Type: Package
 Title: user management manager server functions for dms
-Version: 0.4.0
+Version: 0.5.0
 Author: hulilei
 Maintainer: hulilei <hulilei@takewiki.com.cn>
 Description: More about what it does (maybe more than one line)

@@ -109,7 +109,7 @@ roleAdd_save <- function(conn = tsda::conn_rds('rdbe'),
   if(flag){
     FInterId = roleAdd_MaxId(conn = conn) + 1
     sql <- paste0("  insert into t_md_role
-    values(1,'",app_id,"','",role_name,"','",note,"',0)")
+    values(",FInterId,",'",app_id,"','",role_name,"','",note,"',0)")
     tsda::sql_update(conn,sql)
     res = TRUE
 

@@ -74,8 +74,9 @@ userRoleSetting_role_query <- function(conn = tsda::conn_rds('rdbe'),app_id ='cp
 userRoleSetting_role_update <- function(conn = tsda::conn_rds('rdbe'),app_id ='cpdms',user_name='韩向松',role_name='admin') {
   sql <- paste0("update a set     a.Fpermissions  ='",role_name,"'
   FROM  t_md_userRight a
-  where a.FappId ='cpdms' and a.Fdeleted =0
+  where a.FappId ='",app_id,"' and a.Fdeleted =0
   and a.Fuser ='",user_name,"'  ")
+  print(sql)
   res =  tsda::sql_update(conn,sql)
 
   return(res)
@@ -117,6 +118,8 @@ userRoleSettingServer <- function(input,output,session,app_id){
   shiny::observeEvent(input$userRoleSetting_save_btn,{
      user_name = input$userRoleSetting_userName_sel
      role_name =input$userRoleSetting_roleName_sel
+     print(user_name)
+     print(role_name)
      userRoleSetting_role_update(app_id = app_id,user_name = user_name,role_name = role_name)
      tsui::run_dataTable2(id = 'userRoleSetting_query_dataview',data = userQuery_query(app_id=app_id,user_name=user_name))
 
